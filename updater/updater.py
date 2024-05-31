@@ -14,6 +14,7 @@ class Updater:
         @self.app.route('/<string:project>/tag', methods=['POST'])
         def new_version(project):
             updater = CommitUpdater(project)
+            return jsonify(updater.new_version())
 
         @self.app.route('/<string:project>/logs', methods=['GET'])
         def get_logs(project):
