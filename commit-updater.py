@@ -1,4 +1,4 @@
-from updater.commit_updater import CommitUpdater
+from updater.commit_updater.commit_updater import CommitUpdater
 
 c = CommitUpdater("version-controller")
 new_version = c.new_version()
