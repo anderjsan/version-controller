@@ -1,0 +1,31 @@
+# Use the official Python base image
+FROM python:3.9-slim
+
+# Install Git and other necessary tools
+RUN apt-get update && apt-get install -y git && apt-get clean
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the requirements.txt file to the working directory
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip install -r requirements.txt
+
+# Create the .version/log directory
+RUN mkdir -p /app/.version/log
+
+# Copy only the necessary directories and files to the working directory
+COPY .version /app/.version
+COPY updater /app/updater
+COPY updater.py /app/
+
+# Give full access to all files in the working directory
+RUN chmod -R 777 /app
+
+# Expose the port that Flask uses
+EXPOSE 4004
+
+# Set the command to start the Flask server
+CMD ["python", "updater.py"]

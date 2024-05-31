@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile-Jenkins
+    image: DinD/jenkins-local:3.7.0
+    ports:
+      - "8081:8080"
+    volumes:
+      - /var/jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./.version:/var/jenkins_home/.version
+    container_name: jenkins
+    restart: always
+  version-control:
+    build:
+      context: .
+      dockerfile: Dockerfile-version-controller  # Certifique-se de que o Dockerfile está no diretório correto
+    image: DinD/version-control:3.7.0
+    ports:
+      - "4004:4005"
+    volumes:
+      - ./.version:/app/.version
+    container_name: version-control
+    restart: unless-stopped
