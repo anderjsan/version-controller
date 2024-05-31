@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from updater.commit_updater import CommitUpdater
+from updater.commit_updater.commit_updater import CommitUpdater
 
 class Updater:
     def __init__(self):
