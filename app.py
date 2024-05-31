@@ -1,4 +1,4 @@
-from updater import Updater
+from updater.updater import Updater
 
 if __name__ == "__main__":
     updater = Updater()
