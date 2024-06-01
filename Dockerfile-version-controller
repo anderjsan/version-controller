@@ -19,7 +19,8 @@ RUN mkdir -p /app/.version/log
 # Copy only the necessary directories and files to the working directory
 COPY .version /app/.version
 COPY updater /app/updater
-COPY updater.py /app/
+COPY static /app/static
+COPY app_swg.py /app/
 
 # Give full access to all files in the working directory
 RUN chmod -R 777 /app
@@ -28,4 +29,4 @@ RUN chmod -R 777 /app
 EXPOSE 4004
 
 # Set the command to start the Flask server
-CMD ["python", "updater.py"]
+CMD ["python", "app_swg.py"]
