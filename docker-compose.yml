@@ -5,10 +5,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-version-controller  # Certifique-se de que o Dockerfile está no diretório correto
-    image: DinD/version-control:3.7.0
+    image: anderjsan/version-control:3.7.0
     ports:
       - "4004:4006"
     volumes:
       - ./.version:/app/.version
-    container_name: version-control
+    container_name: version-control-solo
     restart: unless-stopped
