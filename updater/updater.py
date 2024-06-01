@@ -2,8 +2,8 @@ from flask import Flask, jsonify
 from updater.commit_updater.commit_updater import CommitUpdater
 
 class Updater:
-    def __init__(self):
-        self.app = Flask(__name__)
+    def __init__(self, app):
+        self.app = app
         self.add_routes()
 
     def add_routes(self):
