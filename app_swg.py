@@ -7,4 +7,4 @@ if __name__ == "__main__":
     updater = Updater(app)
     swg = App_swagger(app)
     
-    updater.run(port=4006)
+    updater.run(port=4004)
