@@ -50,10 +50,11 @@ class FileManager():
     
     def write_commit_logs(self, logs):
         try:
-            sorted_logs = sorted(logs, key=lambda x: x["date"], reverse=True)
-            for log in sorted_logs:
+            for log in logs:
                 if "fixes" in log:
                     log["fixes"] = sorted(log["fixes"], key=lambda x: x["date"], reverse=True)
+                    
+            sorted_logs = sorted(logs, key=lambda x: x["date"], reverse=True)
 
             with open(self.log_path, "w") as json_file:
                 json.dump(sorted_logs, json_file, indent=4)
