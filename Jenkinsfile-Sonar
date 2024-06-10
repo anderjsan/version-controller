@@ -1,0 +1,64 @@
+pipeline {
+  agent any
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '5'))
+  }
+  environment {
+    SONAR_SCANNER_HOME = tool 'SonarScanner' // Verifique se 'SonarScanner' é o nome configurado na instalação de ferramentas globais
+    VENV = 'venv' // Nome do ambiente virtual Python
+  }
+  stages {
+    stage('Setup') {
+      steps {
+        script {
+          // Criação do ambiente virtual Python
+          sh 'python3 -m venv $VENV' 
+          if (fileExists("$VENV/bin/activate")) {
+            echo "Ambiente virtual criado com sucesso."
+          } else {
+            error "Falha ao criar o ambiente virtual."
+          }
+          // Instalação das dependências do projeto
+          sh './$VENV/bin/pip install -r requirements.txt' 
+        }
+      }
+    }
+    stage('Test') {
+      steps {
+        // Execução dos testes unitários
+        sh './$VENV/bin/python -m unittest discover'
+      }
+    }
+    stage('Scan') {
+      steps {
+        script {
+          // Execução da análise estática com SonarQube
+          withSonarQubeEnv('sq1') {
+            sh """
+              ${env.SONAR_SCANNER_HOME}/bin/sonar-scanner \
+                -Dsonar.projectKey=DinD-Jenkins \
+                -Dsonar.sources=. \
+                -Dsonar.exclusions=${env.VENV}/** \
+                -Dsonar.host.url=http://sonarqube-svr:9000 \
+                -Dsonar.token=sqp_b7075335c074d7a96e360dadbe032e9c2986114a \
+                -Dsonar.coverage.exclusions=**/*
+            """
+          }
+        }
+      }
+    }
+  }
+  post {
+    always {
+      // Verifica se o ambiente virtual Python está ativado antes de tentar desativá-lo
+      script {
+        def result = sh(returnStatus: true, script: 'python -c "import sys; print(sys.prefix)"')
+        if (result == 0) {
+          sh 'deactivate'
+        } else {
+          echo 'Ambiente virtual Python não está ativado. Não é necessário desativar.'
+        }
+      }
+    }
+  }
+}

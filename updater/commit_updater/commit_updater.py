@@ -17,7 +17,7 @@ class CommitUpdater():
         self._last_tag = [0,0,0]
         self._commit_message = ""
     
-    def set_version_terms(self):
+    def _set_version_terms(self):
         try:
             git = GitUtils()
             git.clone_repository(self._project)
@@ -28,15 +28,7 @@ class CommitUpdater():
         except Exception as e:
             print(f"Erro ao clonar repositório: {e}")
             raise
-    def new_version(self):
-        self.set_version_terms()
-        last_version = self._file_manager.read_last_version(self._project).split(".")
-        new_version = self._version_manager.calculate_new_version(last_version)
-        new_version_str = ".".join(new_version)
-        self._file_manager.write_new_version(new_version_str)
-        self._log_version(new_version_str)
-        return new_version_str
-    
+        
     def _log_version(self, new_version):
         commit_logs = self._file_manager.read_commit_logs()
         
@@ -60,16 +52,6 @@ class CommitUpdater():
             commit_logs.append(commit_log)
         self._file_manager.write_commit_logs(commit_logs)
     
-    def get_log(self, tag=None):
-        try:
-            commit_logs = self._file_manager.read_commit_logs()
-            if not tag:
-                return commit_logs
-            return self._filter_logs_by_tag(commit_logs, tag)
-        except Exception as e:
-            print(f"Erro em get_log: {e}")
-            raise
-    
     def _filter_logs_by_tag(self, commit_logs, tag):
         log_return = []
         if tag.split(".")[-1] == "0":
@@ -83,10 +65,29 @@ class CommitUpdater():
                         commit_copy = {"fixes": fixes, "git_message": commit["git_message"], "tag": commit["tag"]}
                         log_return.append(commit_copy)
         return log_return
+    
+    def new_version(self):
+        self._set_version_terms()
+        last_version = self._file_manager.read_last_version().split(".")
+        new_version = self._version_manager.calculate_new_version(last_version)
+        new_version_str = ".".join(new_version)
+        self._file_manager.write_new_version(new_version_str)
+        self._log_version(new_version_str)
+        return new_version_str
 
     def get_last_tag(self):
-        return self._file_manager.read_last_version(self._project)
-    
+        return self._file_manager.read_last_version()
+
+    def get_log(self, tag=None):
+        try:
+            commit_logs = self._file_manager.read_commit_logs()
+            if not tag:
+                return commit_logs
+            return self._filter_logs_by_tag(commit_logs, tag)
+        except Exception as e:
+            print(f"Erro em get_log: {e}")
+            raise
+
     def get_last_log(self):
         last_tag = self.get_last_tag()
         return self.get_log(last_tag)

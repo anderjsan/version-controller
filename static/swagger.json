@@ -3,7 +3,7 @@
   "info": {
     "title": "API TAG Controller",
     "description": "API that generates new TAG For Docker Version. Works along with Jenkins.",
-    "version": "3.7.0",
+    "version": "5.0.0",
     "termsOfService": "Not Applicable",
     "contact": {
       "name": "AJS Consulting",

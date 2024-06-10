@@ -1,10 +1,15 @@
+# app_swg.py
 from flask import Flask
 from updater.updater import Updater
-from updater.swagger import App_swagger
+from updater.app_swagger import AppSwagger
 
-if __name__ == "__main__":
+def initialize_app():
     app = Flask(__name__)
     updater = Updater(app)
-    swg = App_swagger(app)
+    swg = AppSwagger(app)
     
-    updater.run(port=4004)
+    swg.run()
+    updater.run()
+
+if __name__ == "__main__":
+    initialize_app()

@@ -12,7 +12,7 @@ class FileManager():
     def _create_directories(self):
         os.makedirs(self.project_dir, exist_ok=True)
     
-    def read_last_version(self, project):
+    def read_last_version(self):
         try:
             with open(self.version_path, "r") as f:
                 if not f.read():
@@ -61,9 +61,5 @@ class FileManager():
         except Exception as e:
             print(f"Error in write_commit_logs: {e}")
             print()
-
             with open(self.log_path, "w") as json_file:
                 json.dump(sorted_logs, json_file, indent=4)
-        except Exception as e:
-            print(f"Error in write_commit_logs: {e}")
-            print
