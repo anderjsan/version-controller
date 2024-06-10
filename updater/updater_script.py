@@ -1,3 +1,4 @@
+# updater_script.py
 from flask import Flask, jsonify
 from commit_updater.commit_updater import CommitUpdater
 

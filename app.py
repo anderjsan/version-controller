@@ -1,3 +1,4 @@
+# app.py
 from flask import Flask
 from updater.updater import Updater
 
