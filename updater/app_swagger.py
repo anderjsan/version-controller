@@ -1,4 +1,4 @@
-# swagger.py
+# updater/app_swagger.py
 import os
 from flask import json
 from flask_swagger_ui import get_swaggerui_blueprint

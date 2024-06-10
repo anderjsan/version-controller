@@ -1,3 +1,4 @@
+# updater/commit_updater/version_manager.py
 class VersionManager():
     def __init__(self, commit_keywords):
         self.commit_keywords = commit_keywords
