@@ -1,0 +1,15 @@
+# docker-compose.yml
+version: '3'
+
+services:
+  version-control:
+    build:
+      context: .
+      dockerfile: Dockerfile-version-controller  # Certifique-se de que o Dockerfile está no diretório correto
+    image: anderjsan/version-control:3.7.0
+    ports:
+      - "4005:4005"
+    volumes:
+      - ./.version:/app/.version
+    container_name: version-control-solo
+    restart: unless-stopped
